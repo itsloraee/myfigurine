@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { supabase } from "./supabaseClient";
 import { useAuth } from "./AuthProvider";
+import ProductGrid from "./Products/ProductGrid";
 
 interface Listing {
   id: string;
@@ -327,6 +328,7 @@ export default function MyFigurineHome() {
                 <h2 className="text-lg font-semibold text-slate-900">
                   Annonces récentes
                 </h2>
+                <ProductGrid/>
                 <a
                   href="#"
                   className="text-sm text-orange-600 flex items-center gap-1 hover:underline"
@@ -334,6 +336,7 @@ export default function MyFigurineHome() {
                   Voir toutes les annonces
                   <ChevronRight size={14} />
                 </a>
+                
               </div>
               {loading ? (
                 <p className="text-sm text-slate-400">
