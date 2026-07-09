@@ -50,16 +50,16 @@ export default function LoginPage() {
           </p>
         )}
 
-        <label className="text-xs font-medium text-slate-500">Email</label>
+        <label className="text-xs font-medium text-slate-500 ">Email</label>
         <input
           type="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full mt-1 mb-4 border border-slate-200 rounded-lg px-3 py-2 text-sm"
+          className="w-full mt-1 mb-4 border border-slate-200 rounded-lg px-3 py-2 text-sm text-black"
         />
 
-        <label className="text-xs font-medium text-slate-500">
+        <label className="text-xs font-medium text-slate-500 ">
           Mot de passe
         </label>
         <input
@@ -67,7 +67,7 @@ export default function LoginPage() {
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full mt-1 mb-6 border border-slate-200 rounded-lg px-3 py-2 text-sm"
+          className="w-full mt-1 mb-6 border border-slate-200 rounded-lg px-3 py-2 text-sm text-black"
         />
 
         <button
