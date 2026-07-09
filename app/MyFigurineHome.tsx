@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import type { ReactNode } from "react";
+import Link from "next/link";
 import {
   Search,
   MapPin,
@@ -13,6 +14,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { supabase } from "./supabaseClient";
+import { useAuth } from "./AuthProvider";
 
 interface Listing {
   id: string;
@@ -137,6 +139,7 @@ function ListingCard({ item }: ListingCardProps) {
 }
 
 export default function MyFigurineHome() {
+  const { user, loading: authLoading, signOut } = useAuth();
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
@@ -229,12 +232,35 @@ export default function MyFigurineHome() {
             <NavLink>Favoris</NavLink>
           </nav>
 
-          <button
-            aria-label="Mon compte"
-            className="w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center"
-          >
-            <User size={16} className="text-slate-500" />
-          </button>
+          {!authLoading && (
+            <>
+              {user ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-9 h-9 rounded-full bg-orange-100 flex items-center justify-center">
+                    <span className="text-xs font-semibold text-orange-700">
+                      {(user.user_metadata?.nom ?? user.email ?? "?")
+                        .charAt(0)
+                        .toUpperCase()}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => signOut()}
+                    className="text-sm text-slate-500 hover:text-slate-800"
+                  >
+                    Déconnexion
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  aria-label="Se connecter"
+                  className="w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center"
+                >
+                  <User size={16} className="text-slate-500" />
+                </Link>
+              )}
+            </>
+          )}
         </div>
       </header>
 
