@@ -85,7 +85,7 @@ export default function SignupPage() {
           required
           value={nom}
           onChange={(e) => setNom(e.target.value)}
-          className="w-full mt-1 mb-4 border border-slate-200 rounded-lg px-3 py-2 text-sm"
+          className="w-full mt-1 mb-4 border border-slate-200 rounded-lg px-3 py-2 text-sm text-black"
         />
 
         <label className="text-xs font-medium text-slate-500">Email</label>
@@ -94,7 +94,7 @@ export default function SignupPage() {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full mt-1 mb-4 border border-slate-200 rounded-lg px-3 py-2 text-sm"
+          className="w-full mt-1 mb-4 border border-slate-200 rounded-lg px-3 py-2 text-sm text-black"
         />
 
         <label className="text-xs font-medium text-slate-500">
@@ -106,7 +106,7 @@ export default function SignupPage() {
           minLength={6}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full mt-1 mb-6 border border-slate-200 rounded-lg px-3 py-2 text-sm"
+          className="w-full mt-1 mb-6 border border-slate-200 rounded-lg px-3 py-2 text-sm text-black"
         />
 
         <button
