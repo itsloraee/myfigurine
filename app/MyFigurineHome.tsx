@@ -19,7 +19,7 @@ const fallbackGradients = [
   "from-pink-400 to-rose-600",
 ];
 
-function timeAgo(dateString) {
+function timeAgo(dateString: string) : string {
   const diffMs = Date.now() - new Date(dateString).getTime();
   const hours = Math.floor(diffMs / (1000 * 60 * 60));
   if (hours < 1) return "À l'instant";
