@@ -31,7 +31,7 @@ interface AnnonceRow {
   prix: number;
   ville: string | null;
   date_publication: string;
-  categorie: { titre: string } | null;
+  categorie: { titre: string }[] | null;
   image: { url: string }[];
 }
 
@@ -173,7 +173,7 @@ export default function MyFigurineHome() {
         (annonce: AnnonceRow, i: number) => ({
           id: annonce.id,
           title: annonce.titre,
-          serie: annonce.categorie?.titre ?? "Figurine",
+          serie: annonce.categorie?.[0]?.titre ?? "Figurine",
           price: `${annonce.prix} €`,
           city: annonce.ville ?? "Non renseignée",
           time: timeAgo(annonce.date_publication),
