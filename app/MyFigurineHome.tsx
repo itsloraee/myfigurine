@@ -1,4 +1,7 @@
+"use client";
+
 import { useState, useEffect } from "react";
+import type { ReactNode } from "react";
 import {
   Search,
   MapPin,
@@ -11,15 +14,42 @@ import {
 } from "lucide-react";
 import { supabase } from "./supabaseClient";
 
+interface Listing {
+  id: string;
+  title: string;
+  serie: string;
+  price: string;
+  city: string;
+  time: string;
+  imageUrl: string | null;
+  gradient: string;
+}
+
+interface AnnonceRow {
+  id: string;
+  titre: string;
+  prix: number;
+  ville: string | null;
+  date_publication: string;
+  categorie: { titre: string } | null;
+  image: { url: string }[];
+}
+
+interface Category {
+  label: string;
+  count: string;
+  emoji: string;
+}
+
 // Dégradés de secours utilisés quand une annonce n'a pas encore d'image
-const fallbackGradients = [
+const fallbackGradients: string[] = [
   "from-slate-700 to-slate-900",
   "from-teal-500 to-teal-700",
   "from-red-600 to-orange-700",
   "from-pink-400 to-rose-600",
 ];
 
-function timeAgo(dateString: string) : string {
+function timeAgo(dateString: string): string {
   const diffMs = Date.now() - new Date(dateString).getTime();
   const hours = Math.floor(diffMs / (1000 * 60 * 60));
   if (hours < 1) return "À l'instant";
@@ -28,7 +58,7 @@ function timeAgo(dateString: string) : string {
   return `Il y a ${days}j`;
 }
 
-const categories = [
+const categories: Category[] = [
   { label: "Anime", count: "1 234 annonces", emoji: "⭐" },
   { label: "Manga", count: "875 annonces", emoji: "📖" },
   { label: "Jeux vidéo", count: "1 102 annonces", emoji: "🎮" },
@@ -37,13 +67,18 @@ const categories = [
   { label: "Autres", count: "214 annonces", emoji: "⋯" },
 ];
 
-const securityTips = [
+const securityTips: string[] = [
   "Ne payez jamais en dehors de la plateforme",
   "Privilégiez la remise en main propre",
   "Vérifiez bien l'état de la figurine",
 ];
 
-function NavLink({ children, active }) {
+interface NavLinkProps {
+  children: ReactNode;
+  active?: boolean;
+}
+
+function NavLink({ children, active }: NavLinkProps) {
   return (
     <a
       href="#"
@@ -58,7 +93,11 @@ function NavLink({ children, active }) {
   );
 }
 
-function ListingCard({ item }) {
+interface ListingCardProps {
+  item: Listing;
+}
+
+function ListingCard({ item }: ListingCardProps) {
   const [fav, setFav] = useState(false);
   return (
     <div className="bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
@@ -98,7 +137,7 @@ function ListingCard({ item }) {
 }
 
 export default function MyFigurineHome() {
-  const [listings, setListings] = useState([]);
+  const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
 
@@ -130,16 +169,18 @@ export default function MyFigurineHome() {
         return;
       }
 
-      const formatted = data.map((annonce, i) => ({
-        id: annonce.id,
-        title: annonce.titre,
-        serie: annonce.categorie?.titre ?? "Figurine",
-        price: `${annonce.prix} €`,
-        city: annonce.ville ?? "Non renseignée",
-        time: timeAgo(annonce.date_publication),
-        imageUrl: annonce.image?.[0]?.url ?? null,
-        gradient: fallbackGradients[i % fallbackGradients.length],
-      }));
+      const formatted: Listing[] = (data ?? []).map(
+        (annonce: AnnonceRow, i: number) => ({
+          id: annonce.id,
+          title: annonce.titre,
+          serie: annonce.categorie?.titre ?? "Figurine",
+          price: `${annonce.prix} €`,
+          city: annonce.ville ?? "Non renseignée",
+          time: timeAgo(annonce.date_publication),
+          imageUrl: annonce.image?.[0]?.url ?? null,
+          gradient: fallbackGradients[i % fallbackGradients.length],
+        })
+      );
 
       setListings(formatted);
       setLoading(false);
